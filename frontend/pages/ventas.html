@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realizar Venta</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/styles.css">
+</head>
+
+<body>
+    <button class="toggle-btn" id="toggleBtn">☰</button>
+
+    <div class="container-fluid">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <h4>JMR</h4>
+            <ul>
+                <li><a href="../index.html">Productos</a></li>
+                <li><a href="clientes.html">Clientes</a></li>
+                <li><a href="ventas.html">Realizar Venta</a></li>
+                <li><a href="detallesventas.html">Todas las Ventas</a></li>
+                <li><a href="#">Transacciones Proximamente</a></li>
+                <li><a href="#">Estadísticas Proximamente</a></li>
+            </ul>
+        </div>
+
+        <!-- Contenido de ventas -->
+        <div class="content" id="content">
+            <h2>Realizar Venta</h2>
+
+            <!-- Formulario para agregar ventas -->
+            <div class="form-container">
+                <form id="formRealizarVenta">
+                    <div class="form-group">
+                        <label for="cliente">Seleccionar Cliente:</label>
+                        <select id="cliente" class="form-control" required>
+                            <!-- Aquí se llenarán dinámicamente los clientes -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="metodoPago">Método de Pago:</label>
+                        <select id="metodoPago" class="form-control" required>
+                            <!-- Aquí se llenarán dinámicamente los métodos de pago -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="producto">Seleccionar Producto:</label>
+                        <select id="producto" class="form-control" required>
+                            <!-- Aquí se llenarán dinámicamente los productos -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cantidad">Cantidad:</label>
+                        <input type="number" id="cantidad" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="precioTotal">Precio Total:</label>
+                        <input type="number" id="precioTotal" class="form-control" readonly>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Agregar Producto a la Venta</button>
+                </form>
+            </div>
+
+            <!-- Tabla de productos agregados a la venta -->
+            <div class="table-container">
+                <h3>Productos en la Venta</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unitario</th>
+                            <th>Subtotal</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productosVentaTableBody">
+                        <!-- Aquí se cargarán los productos agregados a la venta dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Resumen de la venta -->
+            <div class="resumen-venta">
+                <h3>Resumen de la Venta</h3>
+                <p><strong>Total Venta: </strong><span id="totalVenta">0.00</span></p>
+                <button class="btn btn-success" id="finalizarVenta">Finalizar Venta</button>
+            </div>
+
+        </div>
+    </div>
+    <script src="../js/ventas.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

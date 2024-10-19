@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario de Productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+    <button class="toggle-btn" id="toggleBtn">☰</button>
+
+    <div class="container-fluid">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <h4>JMR</h4>
+            <ul>
+                <li><a href="../index.html">Productos</a></li>
+                <li><a href="clientes.html">Clientes</a></li>
+                <li><a href="ventas.html">Realizar Venta</a></li>
+                <li><a href="detallesventas.html">Todas las Ventas</a></li>
+                <li><a href="#">Transacciones Proximamente</a></li>
+                <li><a href="#">Estadísticas Proximamente</a></li>
+            </ul>
+        </div>
+
+        <!-- Contenido de productos -->
+        <div class="content" id="content">
+            <h2>Clientes</h2>
+            <button type="button" class="btn btn-primary" id="btnAbrirModal">
+                Agregar Cliente
+            </button>
+            <!-- Modal para agregar productos-->
+            <div class="modal fade" id="modalAgregarCliente" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Agregar Cliente</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Aquí va el formulario -->
+                            <form id="formAgregarCliente">
+                                <div class="form-group">
+                                    <label for="clientenombre">Nombre:</label>
+                                    <input type="text" id="clientenombre" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="clientecuit">Cuit:</label>
+                                    <input type="text" id="clientecuit" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="clienteemail">Email:</label>
+                                    <input type="email" id="clienteemail" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="clientetelefono">Telefono:</label>
+                                    <input type="text" id="clientetelefono" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="clientedireccion">Direccion:</label>
+                                    <input type="text" id="clientedireccion" class="form-control" required>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-info" form="formAgregarCliente">Agregar
+                                Cliente</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre del cliente</th>
+                            <th>CUIT</th>
+                            <th>Email</th>
+                            <th>Telefono</th>
+                            <th>Dirección</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clientesTableBody">
+                        <!-- Aquí se cargarán los productos dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+            <!-- Modal para Editar Cliente -->
+            <div class="modal fade" id="modalEditarCliente" tabindex="-1" role="dialog" aria-labelledby="modalEditarProductoLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalEditarProductoLabel">Editar Producto</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Aquí va el formulario -->
+                            <form id="formEditarCliente">
+                                <div class="form-group">
+                                    <label for="clientenombre">Nombre:</label>
+                                    <input type="text" id="clientenombreeditar" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="clientecuit">Cuit:</label>
+                                    <input type="text" id="clientecuiteditar" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="clienteemail">Email:</label>
+                                    <input type="email" id="clienteemaileditar" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="clientetelefono">Telefono:</label>
+                                    <input type="text" id="clientetelefonoeditar" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="clientedireccion">Direccion:</label>
+                                    <input type="text" id="clientedireccioneditar" class="form-control" required>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-info" form="formEditarCliente">Editar Cliente</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/clientes.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
