@@ -1,3 +1,12 @@
+// JavaScript para manejar el botón de contraer/expandir el sidebar
+const toggleBtn = document.getElementById('toggleBtn');
+const sidebar = document.getElementById('sidebar');
+
+toggleBtn.addEventListener('click', function () {
+    sidebar.classList.toggle('collapsed');
+});
+
+
 document.addEventListener('DOMContentLoaded', function () {
     // Cargar clientes y productos al cargar la página
     cargarClientes();
@@ -152,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const venta = {
                 clienteid: clienteId,
                 metodopagoid: metodoPagoId,
-                ventafecha: new Date().toISOString().slice(0, 10), // Añadir fecha de la venta
+                ventafecha: new Date().toLocaleString("es-AR", { timeZone: "America/Argentina/Buenos_Aires" }), // Añadir fecha de la venta
                 totalventa: totalVenta,
                 productos: productosVenta
             };

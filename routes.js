@@ -409,8 +409,8 @@ router.get('/ventas', async (req, res) => {
         const sentenciaSQL = `
             SELECT 
                 v.ventaid,
-                c.clientenombre AS clientenombre,  -- Asegúrate de que este sea el nombre de la columna
-                mp.descripcion AS metodo_pago_nombre, -- Asegúrate de que este sea el nombre de la columna
+                c.clientenombre AS clientenombre,
+                mp.descripcion AS metodo_pago_nombre,
                 v.ventafecha,
                 v.totalventa
             FROM 
@@ -418,7 +418,9 @@ router.get('/ventas', async (req, res) => {
             JOIN 
                 clientes c ON v.clienteid = c.clienteid
             JOIN 
-                metodo_pago mp ON v.metodopagoid = mp.metodo_pago_id;
+                metodo_pago mp ON v.metodopagoid = mp.metodo_pago_id
+            ORDER BY 
+                v.ventafecha DESC;
         `;
 
         const resultado = await pool.query(sentenciaSQL);
@@ -447,7 +449,6 @@ router.get('/ventas', async (req, res) => {
         });
     }
 });
-
 
 // Obtener detalles de una venta
 router.get('/ventas/:ventaid/detalles', async (req, res) => {
@@ -494,8 +495,6 @@ router.get('/ventas/:ventaid/detalles', async (req, res) => {
     }
 });
 
-
-
 // Endpoint para realizar una venta
 router.post('/ventas', async (req, res) => {
     const { clienteid, metodopagoid, ventafecha, totalventa, productos } = req.body;
@@ -513,18 +512,31 @@ router.post('/ventas', async (req, res) => {
         const resultadoVenta = await pool.query(insertarVentaSQL, [clienteid, metodopagoid, ventafecha, totalventa]);
         const ventaId = resultadoVenta.rows[0].ventaid; // Obtenemos el ID de la venta insertada
 
-        // Insertar cada producto de la venta
+        // Insertar cada producto de la venta y actualizar el stock
         const insertarProductoSQL = `
             INSERT INTO detalle_venta (ventaid, productoid, cantidad, precio_unitario)
             VALUES ($1, $2, $3, $4);
         `;
+        
+        const actualizarStockSQL = `
+            UPDATE productos
+            SET productosstock = productosstock - $1
+            WHERE productoid = $2;
+        `;
 
         for (const producto of productos) {
+            // Insertar en detalle_venta
             await pool.query(insertarProductoSQL, [
                 ventaId,
                 producto.productoid,
                 producto.cantidad,
                 producto.precioUnitario,
+            ]);
+
+            // Actualizar el stock del producto
+            await pool.query(actualizarStockSQL, [
+                producto.cantidad,
+                producto.productoid
             ]);
         }
 
@@ -551,6 +563,41 @@ router.post('/ventas', async (req, res) => {
         });
     }
 });
+
+// Endpoint para eliminar una venta
+router.delete('/ventas/:id', async (req, res) => {
+    const idVenta = parseInt(req.params.id, 10); // Convertimos el ID a número
+
+    try {
+        // Obtener los detalles de la venta para actualizar el stock
+        const detallesQuery = 'SELECT productoid, cantidad FROM detalle_venta WHERE ventaid = $1';
+        const detallesResult = await pool.query(detallesQuery, [idVenta]);
+
+        if (detallesResult.rowCount === 0) {
+            return res.status(404).json({ result_estado: 'error', result_message: 'Venta no encontrada' });
+        }
+
+        // Actualizar el stock para cada producto vendido
+        for (const detalle of detallesResult.rows) {
+            const { productoid, cantidad } = detalle; // Asegúrate de que el nombre de la propiedad sea correcto
+            const updateStockQuery = `UPDATE productos SET productosstock = productosstock + $1 WHERE productoid = $2`;
+            await pool.query(updateStockQuery, [cantidad, productoid]); // Cambié 'producto_id' por 'productoid'
+        }
+
+        // Eliminar los detalles de la venta
+        await pool.query(`DELETE FROM detalle_venta WHERE ventaid = $1`, [idVenta]);
+
+        // Eliminar la venta
+        const deleteVentaQuery = `DELETE FROM venta WHERE ventaid = $1`;
+        await pool.query(deleteVentaQuery, [idVenta]);
+
+        res.json({ result_estado: 'ok', result_message: 'Venta eliminada correctamente' });
+    } catch (error) {
+        console.error('Error al eliminar la venta:', error);
+        res.status(500).json({ result_estado: 'error', result_message: 'Error al eliminar la venta' });
+    }
+});
+
 
 
 module.exports = router;
