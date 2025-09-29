@@ -83,19 +83,13 @@ JMRProyectoExpressJS/
    git clone https://github.com/gonza-rom/JMRProyectoExpressJS.git
    cd JMRProyectoExpressJS
 
-2.Instalar dependencias:
+-2. Instalar dependencias:
 npm install
 
+-3. Iniciar el servidor: 
+node server.js o en modo desarrollo con nodemon: npm run dev
 
-3.Iniciar el servidor:
-node server.js
-
-
-o en modo desarrollo con nodemon:
-npm run dev
-
-
-Abrir en el navegador:
+-4. Abrir en el navegador:
 http://localhost:3002
 
 📌 Posibles mejoras
